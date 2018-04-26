@@ -23,9 +23,9 @@ api = tweepy.API(auth)
 i = 0
 while (i<int(inum)):	
 	ft = open (s_str + ".txt", "a")
-	public_tweets = api.search(q = "melbourne", rpp = 95, since_id = i*100)
+	public_tweets = api.search(q = s_str, rpp = 95, since_id = i*100)
 	for item in public_tweets:
-		ft.write("# USERNAME #"+item.user.screen_name.encode('utf-8') + "# USERTEXT #" + item.text.encode('utf-8') + "\n")
+		ft.write("# USERNAME #" + str(item.user.screen_name.encode('utf-8')) + "# USERTEXT #" + str(item.text.encode('utf-8')) + "\n")
 	print i
 	i+=1
 	ft.close()
