@@ -28,4 +28,4 @@ baseurl = "http://openapi.aurin.org.au/"
 url = baseurl + "wfs?service=WFS&version=2.0.0&request=DescribeFeatureType&typeName=namespace:featuretype&outputFormat=application/json"
 #url = baseurl + "csw?request=GetCapabilities&service=CSW&acceptVersions=2.0.2&outputFormat=application/json"
 print "SEARCH_RES:"
-print aurin(url)
+print aurin(url) + "123"
