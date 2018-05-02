@@ -1,6 +1,25 @@
 # Introduction
+Ansible scripts are called __playbooks__, and written as simple `YAML` files.  
+folder hierarchy:
+> Playbook folder
+> |- variables
+> |  |\_ vars
+> |- inventory
+> |  |\_ inventory.ini
+> |- roles
+> |  |- files
+> |  |- tasks
+> |  |  |- task1.yml
+> |  |  |\_ task2.yml
+> |  |\_ templates
+> |\_ playbook.yml
+
+## Variables
+Specify apache version and what port apache shall run on, etc..  
+
 ## Inventories
-things you want to automatic
+Things you want to automatic, and what hosts that ansible can access to. They can be grouped and
+stored in `.ini` file by default.  
 
 ``` ansible
     ---
@@ -24,9 +43,49 @@ Tasks run sequentially
     ---
     - name: install and start apache
       hosts: web
-      remote_user: justin
+      remote_user: ubuntu
+      become_method: sudo
+      become_user: ubuntu
+      vars:
+        http_port: 80
+        max_clients: 200
 
       tasks:
+      - name: install httpd
+        yum: name=httpd state-latest
+      - name: write apache config file
+        template: src=srv/httpd.j2 dest=/etc/httpd.conf
+        notify:
+        - restart apache
+      - name: start httpd
+        service: name-httpd state=running
+
+      handlers:
+      - name: restart apache
+        service: name=httpd state=restarted
 ```
 
 ## Modules
+## How to run
+### Ad-Hoc commands
+Runs a command or calls a module directly from the command line, no Playbook required.  
+
+    ansible <inventory> <options>
+
+    ansible web -a /bin/date
+    ansible web -m ping # call a module
+    ansible web -m yum -a "name=openssl state=latest"
+### Playbooks
+Runs a Playbook on selected inventories from the command line.  
+
+    ansible-playbook <options>
+
+    ansible-playbook my-playbook.yml
+### Check mode
+Dry-run for ad-hoc commands and Playbooks.  
+Validate Playbook runs before making state changes on target systems.
+
+    ansible web -C -m yum -a "name=httpd state=lastest"
+    ansible-playbook -C my-playbook.yml
+### Automation Framework
+    Ansible Tower
