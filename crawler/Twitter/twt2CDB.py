@@ -11,11 +11,14 @@ auth_index = int(sys.argv[4])
 
 s = pycouchdb.Server("http://cluster:cluster12@115.146.95.198:5984/",authmethod = "basic")
 
+db_name = str(s_str + "_RES").replace("+","p")
+db_name = db_name.replace("#","s")
+
 try:
-    rmt_db = s.database(str(s_str + "_RES").lower())
+    rmt_db = s.database(db_name.lower())
 except:
-    print "no such DB remotely..creating " + str(s_str + "_RES").lower()
-    rmt_db = s.create(str(s_str + "_RES").lower())
+    print "no such DB remotely..creating DB " + db_name.lower()
+    rmt_db = s.create(db_name.lower())
 
 auth_index = 0
 consumer_key = ["4WoQyZGgiD4rZliV7Jlgru7x3","GiOfCoiBPM2GfkHkyk0xP2Gxg","KBTRSq44s8Ri3KOGVhhcVRqwb"]
@@ -128,10 +131,13 @@ while (i<int(inum)):
                 temp_dt = "null"
             #write to local file
             wLine = "{\"name\":\"" + temp_name.strip() + "\",\"id\":\"" + temp_id + "\",\"status counts\":\"" + temp_sttscnt + "\",\"time zone\":\"" + temp_tmz + "\",\"datetime\":\"" + temp_dt + "\",\"msg\":\"" + str(item.text.encode("utf-8")).replace("\n"," ") + "\",\"cdnt\":\"" + str(temp_cdnt) + "}\n"
-            #fw_flw_twt = open (s_str + "_RES.txt", "a")
-            #fw_flw_twt.write("{\"name\":\"" + temp_name.strip() + "\",\"id\":\"" + temp_id + "\",\"status counts\":\"" + temp_sttscnt + "\",\"time zone\":\"" + temp_tmz + "\",\"datetime\":\"" + temp_dt + "\",\"msg\":\"" + str(item.text.encode("utf-8")).replace("\n"," ") + "\",\"cdnt\":\"" + str(temp_cdnt) + "}\n")
-            #fw_flw_twt.close()
-            rmt_db.save(dict(_id = temp_id, info = wLine))
+            fw_flw_twt = open (s_str + "_RES.txt", "a")
+            fw_flw_twt.write(wLine)
+            fw_flw_twt.close()
+            try:
+                rmt_db.save(dict(_id = temp_id, info = wLine))
+            except:
+                continue
 
     print "Proc: " + str(i*1.0/int(inum)*100) + "%"
     i += 1
