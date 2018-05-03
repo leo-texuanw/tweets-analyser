@@ -1,0 +1,35 @@
+---
+# Basic tools and servers installation for new instances.
+
+- name: Initialize a new instance
+  hosts: temp
+  vars:
+      http_port: 80
+      max_clients: 200
+  remote_user: ubuntu
+  sudo: yes
+
+  tasks:
+    - name: add database dir
+      file:
+          path: /database
+          state: directory
+
+    - name: install essential tools
+      apt:
+          name: "{{ item }}"
+          state: latest
+      with_items:
+          - vim
+          - git
+          - nginx
+      notify: restart nginx
+
+handlers:
+    - name: restart nginx
+      service:
+          name: nginx
+          state: restarted
+    # another way of doing this:
+    # - name: restart nginx
+    #   service: name=nginx state=started

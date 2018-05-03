@@ -14,10 +14,10 @@ folder hierarchy:
 > |  |\_ templates
 > |\_ playbook.yml
 
-## Variables
+## [Variables](https://www.youtube.com/watch?v=ZAdJ7CdN7DY)
 Specify apache version and what port apache shall run on, etc..  
 
-## Inventories
+## [Inventories](http://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html)
 Things you want to automatic, and what hosts that ansible can access to. They can be grouped and
 stored in `.ini` file by default.  
 
@@ -31,13 +31,16 @@ stored in `.ini` file by default.
     db-b.example.com
 ```
 
+assume we write above lines in `hosts`, then we can test by: [ref](https://www.youtube.com/watch?v=xew7CMkL7jY)
+
+    ansible web -i hosts -m command -a "uptime" -u root --key-file=<key-file>
+
 # Playbooks
 **Playbooks** contain **plays**
 Plays contain **tasks**
 Tasks call **modules**
 
-Tasks run sequentially
-**Handlers** are triggered by tasks, and are run once, at the end of plays.
+Tasks run sequentially. **Handlers** are triggered by tasks, and are run once, at the end of plays.
 
 ```
     ---
@@ -65,12 +68,14 @@ Tasks run sequentially
         service: name=httpd state=restarted
 ```
 
+* Other youtube resource: [1](https://www.youtube.com/watch?v=ZAdJ7CdN7DY)
 ## Modules
 ## How to run
 ### Ad-Hoc commands
 Runs a command or calls a module directly from the command line, no Playbook required.  
 
     ansible <inventory> <options>
+    ansible -i inventory_file -u ubuntu -m shell -a "reboot"
 
     ansible web -a /bin/date
     ansible web -m ping # call a module
@@ -80,7 +85,7 @@ Runs a Playbook on selected inventories from the command line.
 
     ansible-playbook <options>
 
-    ansible-playbook my-playbook.yml
+    $ ansible-playbook -i <host-file> -u ubuntu --key-file=<your-key-file> <playbook>
 ### Check mode
 Dry-run for ad-hoc commands and Playbooks.  
 Validate Playbook runs before making state changes on target systems.

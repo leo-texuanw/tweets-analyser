@@ -19,7 +19,7 @@ print('New volume {} has been created.'.format(vol_req.id))
 
 # Check provisioning status
 curr_vols = ec2_conn.get_all_volumes([vol_req.id])
-print('Volume status: {}, volume {}: '.format(curr_vols[0].status, curr_vols[0].id))
+print('Volume status: {}, volume AZ: {}: '.format(curr_vols[0].status, curr_vols[0].zone))
 
 # Check if instance is running
 while (instance.state != 'running'):
