@@ -17,7 +17,7 @@ def subproc (in_s_str, in_auth_index):
     geo_lat = [-33.868, -37.814, -27.468, -31.952, -34.929, -28, -35.283, -32.927, -34.424, -27.639]
     geo_long = [151.207, 144.963, 153.028, 115.861, 138.599, 153.431, 149.128, 151.776, 150.893, 153.109]
 
-    s = pycouchdb.Server("http://cluster:cluster12@115.146.95.198:5984/",authmethod = "basic")
+    s = pycouchdb.Server("http://cluster:cluster12@115.146.95.198:5985/",authmethod = "basic")
 
     db_name = str(s_str + "_RES").replace("+","p")
     db_name = db_name.replace("#","s")
