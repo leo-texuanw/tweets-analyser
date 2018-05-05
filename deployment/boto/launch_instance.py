@@ -1,11 +1,43 @@
-from connect import ec2_conn
-import constant
+#!/usr/bin/python
+# coding: utf-8
+import sys
+from boto import exception as botoException
+import connect
+import constants as consts
 
-reservation = ec2_conn.run_instances('ami-b481405b',
-                                     key_name='nectar',
-                                     instance_type=constant.INSTANCE_TYPE,
-                                     security_groups=['default'],
-                                     placement=constant.PLACEMENT)
+# If `max_instances` can not be fulfilled only one instance will be created
+def launch(max_instances=1):
+    ec2_conn = connect.ec2_conn()
+    try:
+        reservation = ec2_conn.run_instances(
+            image_id=consts.IMAGE_ID,
+            max_count=max_instances,
+            key_name=consts.KEY_NAME,
+            instance_type=consts.INSTANCE_TYPE,
+            security_groups=consts.SECURITY_GROUPS,
+            placement=consts.PLACEMENT
+        )
 
-instance = reservation.instances[0]
-print('New instance {} has been created.'.format(instance.id))
+        print(reservation)
+        print('Reservation.instances:', reservation.instances)
+
+        display_instances(reservation.instances)
+    except botoException.EC2ResponseError:
+        print(botoException.EC2ResponseError)
+        print("FAIL: Create instance failed")
+        return None
+
+    return reservation.instances
+
+def display_instances(instances):
+    for instance in instances:
+        print('SUCC: New instance has been created:')
+        print('\tID: {}\tIP: {}\tPlacement: {}\t'.format(instance.id,
+                                    instance.private_ip_address,
+                                    instance.placement))
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        launch(int(sys.argv[1]))
+    else:
+        launch()
