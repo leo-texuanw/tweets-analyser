@@ -1,5 +1,0 @@
-- hosts: temp
-  sudo: yes
-
-  tasks:
-    - import_tasks: tasks/docker.yaml

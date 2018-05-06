@@ -36,7 +36,7 @@
 
 - name: Add docker repository and update apt cache
   apt_repository:
-    repo: "deb http://download.docker.com/linux/{{ ansible_di
+    repo: "deb http://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
     mode: '644'
     update_cache: yes
     state: present
