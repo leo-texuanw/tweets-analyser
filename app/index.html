@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="echarts.min.js"></script>
+    <title>Map Document</title>
+</head>
+<body>
+    <div id="main" style="width: 100%;height:800px;"></div>
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+
+        myChart.showLoading();
+
+
+        $.get('Australia.json', function (geoJson) {
+        // var test = JSON.parse(geoJson);
+        
+        // for(var i = 0; i < test['features'].length; i++){
+        //     console.log(test['features'][i]['properties']['name']);
+        // }
+
+        myChart.hideLoading();
+
+        echarts.registerMap('HK', geoJson);
+
+        myChart.setOption(option = {
+           
+            title: {
+                text: 'Australia map',
+                subtext: 'discribe',
+                sublink: '' //put some link to test
+            },
+            //   cpp c python java
+            // 
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                    // params.name : name for each area
+                    var res = params.name+'<br/>';
+                    var myseries = option.series;
+                    // 
+                    for (var i = 0; i < myseries.length; i++) {
+                        for(var j=0;j<myseries[i].data.length;j++){
+                            if(myseries[i].data[j].name == params.name){
+                                for(var k=0;k<myseries[i].data[j].code.length;k++){
+                                    res += myseries[i].data[j].code[k].language +' : ' + myseries[i].data[j].code[k].proportion + '</br>';
+                                }
+                                
+                            }  
+                        }  
+                    }  
+                    return res;  
+                }
+            },
+            
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            
+            visualMap: {
+                min: 800,
+                max: 50000,
+                text:['High','Low'],
+                realtime: false,
+                calculable: true,
+                inRange: {
+                    color: ['lightskyblue','yellow', 'orangered']
+                }
+            },
+            series: [
+                {
+                    name: 'Australia map', 
+                    type: 'map',
+                    mapType: 'HK', 
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    
+                    /*
+                    
+
+                    Demo：
+                    
+                    [
+                        {
+                            "language":"CPP", //CPP语言
+                            "proportion":"80%" // CPP语言所占百分比
+                        },
+                        {
+                            "language":"C",  // C语言
+                            "proportion":"80%" //C语言所占百分比
+                        }
+                    ]
+
+
+                    */
+                    data:[
+                        {name: 'Macquarie Island', value: 20057.34 ,code:[{language:'CPP' , proportion:'80%'},{language:'C' , proportion:'80%'},{language:'JAVA' , proportion:'80%'},{language:'Python' , proportion:'80%'},]},
+                        {name: 'Jervis Bay Territory', value: 15477.48 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Northern Territory', value: 31686.1,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Western Australia', value: 6992.6 ,code:[{language:'CPP' , proportion:'80%'},{language:'C' , proportion:'80%'},{language:'JAVA' , proportion:'80%'},{language:'Python' , proportion:'80%'},]},
+                        {name: 'Australian Capital Territory', value: 44045.49 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'New South Wales', value: 40689.64 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'South Australia', value: 37659.78 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Victoria', value: 45180.97 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Queensland', value: 55204.26 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Norfolk Island', value: 21900.9 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Tasmania', value: 4918.26 ,code:[{language:'CPP' , proportion:'80%'}]}
+                    ],
+                    
+                }
+            ]
+        });
+    });
+
+    </script>
+</body>
+</html>
