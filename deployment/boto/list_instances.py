@@ -1,10 +1,10 @@
 #!/usr/bin/python
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 import connect
 
-def list_instances():
-    ec2_conn = connect.ec2_conn()
+def list_instances(ec2_conn):
+
     reservations = ec2_conn.get_all_reservations()
 
     print('Index\tID\t\tIP\t\tPlacement\tInstance')
@@ -17,4 +17,5 @@ def list_instances():
     return reservations
 
 if __name__ == '__main__':
-    list_instances()
+    ec2_conn = connect.ec2_conn()
+    list_instances(ec2_conn)

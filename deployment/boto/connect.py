@@ -1,8 +1,9 @@
 #!/usr/bin/python
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 import boto
 from boto.ec2.regioninfo import RegionInfo
+
 import constants as consts
 
 def ec2_conn():

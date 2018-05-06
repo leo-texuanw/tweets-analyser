@@ -1,9 +1,10 @@
 #!/usr/bin/python
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 import connect
 
-def list_volumes():
-    ec2_conn = connect.ec2_conn()
+def list_volumes(ec2_conn):
+
     volumes = ec2_conn.get_all_volumes()
 
     print('Volume ID\t Size(GB)\t Zone\t\t Status\t\t Snapshot ID')
@@ -14,4 +15,5 @@ def list_volumes():
     return volumes
 
 if __name__ == '__main__':
-    list_volumes()
+    ec2_conn = connect.ec2_conn()
+    list_volumes(ec2_conn)

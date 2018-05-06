@@ -1,12 +1,11 @@
 #!/usr/bin/python
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 import sys
 from boto import exception as botoException
 import connect
 
-def terminate(instance_ids):
-    ec2_conn = connect.ec2_conn()
+def terminate(ec2_conn, instance_ids):
 
     try:
         print('deleting', instance_ids, '...')
@@ -24,5 +23,6 @@ def terminate(instance_ids):
     return True
 
 if __name__ == '__main__':
+    ec2_conn = connect.ec2_conn()
     instance_ids = sys.argv[1:]
-    terminate(instance_ids)
+    terminate(ec2_conn, instance_ids)

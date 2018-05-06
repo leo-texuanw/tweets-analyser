@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 import time
 import connect
@@ -8,9 +8,9 @@ from launch_instance import launch
 
 PLACEMENT = constants.PLACEMENT
 
-def demo():
-    ec2_conn = connect.ec2_conn()
-    instances = launch(max_instances=1)
+def demo(ec2_conn):
+
+    instances = launch(ec2_conn, max_instances=1)
 
     if(instances == None):
         return
@@ -50,5 +50,8 @@ def demo():
     ec2_conn.delete_snapshot(snapshot.id)
     print('Snapshot {} has been deleted.'.format(snapshot.id))
 
+
 if __name__ == '__main__':
-    demo()
+
+    ec2_conn = connect.ec2_conn()
+    demo(ec2_conn)

@@ -1,13 +1,14 @@
 #!/usr/bin/python
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 import sys
 from boto import exception as botoException
 import connect
 import constants as consts
 
 # If `max_instances` can not be fulfilled only one instance will be created
-def launch(max_instances=1):
-    ec2_conn = connect.ec2_conn()
+def launch(ec2_conn, max_instances=1):
+
     try:
         reservation = ec2_conn.run_instances(
             image_id=consts.IMAGE_ID,
@@ -37,7 +38,8 @@ def display_instances(instances):
                                     instance.placement))
 
 if __name__ == '__main__':
+    ec2_conn = connect.ec2_conn()
     if len(sys.argv) > 1:
-        launch(int(sys.argv[1]))
+        launch(ec2_conn, int(sys.argv[1]))
     else:
-        launch()
+        launch(ec2_conn)

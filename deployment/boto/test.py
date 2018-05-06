@@ -1,11 +1,8 @@
 #!/usr/bin/python
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
-import connect
-import terminate
+from MyNectar import MyNectar
 
-ec2_conn = connect.ec2_conn()
-all = ec2_conn.get_all_instances()
-for i in all:
-    print(i.id)
-terminate.terminate(['i-503870a0'])
+if __name__ == '__main__':
+    MY_NECTAR = MyNectar()
+    MY_NECTAR.launch_instance()
