@@ -1,11 +1,12 @@
 import multiprocessing as mp
 import twt3CDB
+import time
 import sys
 
 if __name__ == "__main__":
 	size_arg = len(sys.argv)
 	search_kwds = []
-	for i in range(1, len(sys.argv) - 1):
+	for i in range(1, len(sys.argv)):
 		search_kwds.append(sys.argv[i])
 
 	try:
@@ -53,6 +54,7 @@ if __name__ == "__main__":
 	print "All Files Validated.."
 
 	run_cnt = 0
+
 	while (run_cnt < 100):
 		id = 0
 		for item in search_kwds:
@@ -62,7 +64,7 @@ if __name__ == "__main__":
 			p.daemon = True
 			p.start()
 			id += 1
-
-		p.join()
+		time.sleep(4000)
 		run_cnt += 1
+
 	print "All processes exited"

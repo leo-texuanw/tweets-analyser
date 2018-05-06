@@ -139,7 +139,7 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
                         else:
                             temp_dt = "null"
                         temp_msg = str(item.text.encode("utf-8")).replace("\n"," ")
-                        wLine = "{\"name\":\"" + str(item.user.screen_name).strip() + "\",\"id\":\"" + temp_id + "\",\"status counts\":\"" + temp_sttscnt + "\",\"location filter\":\"" + geo_cityname[geo_index] + "\",\"time zone\":\"" + temp_tmz + "\",\"datetime\":\"" + temp_dt + "\",\"msg\":\"" + temp_msg + "\",\"cdnt\":\"" + str(temp_cdnt) + "\"}\n"
+                        wLine = "{\"name\":\"" + str(item.user.screen_name).strip() + "\",\"id\":\"" + temp_id + "\",\"status counts\":\"" + temp_sttscnt + "\",\"location filter\":\"" + temp_ctname + "\",\"time zone\":\"" + temp_tmz + "\",\"datetime\":\"" + temp_dt + "\",\"msg\":\"" + temp_msg + "\",\"cdnt\":\"" + str(temp_cdnt) + "\"}\n"
                         
                         if isWTL:   #write to local file
                             fw_flw_twt = open (s_str + "_RES.txt", "a")
@@ -155,4 +155,4 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
                 current_long += inc
 
             current_lat += inc
-            current_long = temp_long - offset
+            current_long = float(temp_long) - offset

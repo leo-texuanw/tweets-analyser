@@ -14,7 +14,7 @@ password=config.get('Auth', 'password')
 #Latitude from -43.00311 to -12.46113 and longitude from 113.6594 to 153.61194.
 #aus#bbox_info ="-43.00311,113.6594,-12.46113,153.61194"
 #bbox_info = "bbox=-38.1,144.7,-37.5,145.5"
-bbox_info = "bbox=-38.1,144.7,-38,145"
+bbox_info = "bbox=-38.1,144.7,-38,144.9"
 # Submit an authenticated request to the AURIN Open API
 def aurin(url):
 
@@ -66,26 +66,35 @@ srch_datasets = []
 srch_keyword = search_str
 for da in dataset_attribute:
     if not (str(da).find(srch_keyword) == -1):
-        srch_datasets.append(da[0]) #record necessary datasets' names only
+        srch_datasets.append(da[0]) #record relevant datasets' names only
 
 #get first X records for each trimmed dataset
+	write_cnt = 0
 	srch_res = []
 	cnt = 0
 	size = len(srch_datasets)
+	fw = open(srch_keyword + ".json","a")
 	for dataset in srch_datasets:
-	    url = "http://openapi.aurin.org.au/wfs?request=GetFeature&service=WFS&version=1.1.0&TypeName=" + dataset + "&MaxFeatures=3&" + bbox_info + "&outputFormat=json"
-	    retry = True
-	    raw_GetFeature = ""
-	    while retry:	#when occuring connection issue, just retry it
-	        try:
-	            raw_GetFeature = aurin(url)
-	        except:
-	            retry = True
-	            print "Connection Exception..Retrying"
-	        else:
-	            retry = False   #get out of while loop
-	    fw = open(srch_keyword + ".json","a")
-	    fw.write(str(raw_GetFeature))
-	    fw.close()
-	    print "GET FEATURES: " + str(cnt*1.0/size*100) + "%"
-	    cnt += 1
+		if write_cnt >= 100:
+			break
+			#sys.exit(0)
+		else:
+		    url = "http://openapi.aurin.org.au/wfs?request=GetFeature&service=WFS&version=1.1.0&TypeName=" + dataset + "&MaxFeatures=1&" + bbox_info + "&outputFormat=json"
+		    retry = True
+		    raw_GetFeature = ""
+		    while retry:	#when occuring connection issue, just retry it
+		        try:
+		            raw_GetFeature = aurin(url)
+		        except:
+		            retry = True
+		            print "Connection Exception..Retrying"
+		        else:
+		            retry = False   #get out of while loop
+		   
+		    fw.write(str(raw_GetFeature))
+		    write_cnt += 1
+		    
+		    print "GET FEATURES: " + str(cnt*1.0/size*100) + "%"
+		    cnt += 1
+		    
+	fw.close()
