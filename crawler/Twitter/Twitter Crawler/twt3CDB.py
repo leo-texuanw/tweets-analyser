@@ -4,10 +4,9 @@ import time
 import re
 import pycouchdb
 
-def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
+def subproc (key_word, usr_op, rmt_db, auth_info, ct_infos):
 
     s_str = str(key_word)
-    s = pycouchdb.Server(db_info, authmethod = "basic")
 
     isWTL = False # write to local file
     for item in usr_op:
@@ -52,25 +51,19 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
 
         db_name = temp_ctname.replace(" ","_")
 
-        try:
-            rmt_db = s.database(db_name.lower())
-        except:
-            print "no such DB remotely..creating DB " + db_name.lower()
-            rmt_db = s.create(db_name.lower())
-
         while current_lat <= max_lat:
             while current_long <= max_long:
                 # for the current GPS info
                 temp_geocode = str(current_lat) + "," + str(current_long) + "," + str(s_radius) + "km" # no space allowed
                 #fetch origin name list, based on keyword
 
-                #print "FIND ORIGIN NAMES in " + temp_ctname + " @ lat: " + str(current_lat) + " long: " + str(current_long)
+                print "FIND ORIGIN NAMES in " + temp_ctname + " @ lat: " + str(current_lat) + " long: " + str(current_long)
                 
                 # applying for retrieving data
                 isFailed = True
                 while isFailed:
                     try:
-                        time.sleep (int(5))
+                        time.sleep (10)
                         public_tweets = tweepy.Cursor(api.search, q = s_str, lang = "en", result_type = "recent", geocode = temp_geocode).items()
                     except:
                         print "Connection Issue.. Reconnecting"

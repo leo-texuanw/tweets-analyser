@@ -2,8 +2,19 @@ import multiprocessing as mp
 import twt3CDB
 import time
 import sys
+import pycouchdb
 
 if __name__ == "__main__":
+
+    isArgv = False
+    ex_db_info = ""
+    if len(sys.argv) == 5:
+        isArgv = True
+        db_usr = sys.argv[1]
+        db_pwd = sys.argv[2]
+        db_ip = sys.argv[3]
+        db_port = sys.argv[4]
+        ex_db_info = "http://" + db_usr + ":" + db_pwd + "@" + db_ip + ":" + db_port + "/"
 
     fr_kwds = open("SEARCH_LST.txt", "r")
     temp_kwds = fr_kwds.readlines()
@@ -65,18 +76,30 @@ if __name__ == "__main__":
 
     run_cnt = 0
 
-    while (run_cnt < 50):
+    while (run_cnt < 100):
         id = 0
         for item in search_kwds:
             print "create process for :" + item
             print "AUTH Index: " + str(id%len(auth_info))
 
-            p = mp.Process(target = twt3CDB.subproc, args = (item, usr_op, cdb_info, auth_info[id%len(auth_info)], ct_infos))
-            p.daemon = True
+            if isArgv:
+                print "CouchDB info read from CMD"
+                s = pycouchdb.Server(ex_db_info, authmethod = "basic")
+            else:
+                s = pycouchdb.Server(cdb_info, authmethod = "basic")
+
+            db_name = "tweets"
+
+            try:
+                rmt_db = s.database(db_name.lower())
+            except:
+                print "no such DB remotely..creating DB " + db_name.lower()
+                rmt_db = s.create(db_name.lower())
+
+            p = mp.Process(target = twt3CDB.subproc, args = (item, usr_op, rmt_db, auth_info[id%len(auth_info)], ct_infos))
             p.start()
             id += 1
         p.join()
-        #time.sleep(4000)
         run_cnt += 1
 
     print "All processes exited"
