@@ -20,5 +20,5 @@ if __name__ == '__main__':
         for idx, res in enumerate(reservations):
             ip = reservations[idx].instances[0].private_ip_address
             print("New instance ip: ", ip)
-            hosts.write(ip, '\n')
+            hosts.write(ip + '\n')
         hosts.close()

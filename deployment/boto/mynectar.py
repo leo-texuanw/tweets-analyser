@@ -83,9 +83,9 @@ class MyNectar:
         return reservations
 
     # Volumes Operation
-    def create_volume(self, count=1):
+    def create_volume(self, size=50):
         """ Create volumes """
-        volume = self.ec2_conn.create_volume(count, self.placement)
+        volume = self.ec2_conn.create_volume(size, self.placement)
         print('New volume {} has been created.'.format(volume.id))
         return volume
 
@@ -103,13 +103,13 @@ class MyNectar:
 
         print("volume status:", volume.status)
 
-        # check instance status is "running"
+        # check if instance status is "running"
         while instance.state != 'running':
-            print('WAIT: Instance {} is {}'.format(instance.id, instance.state))
+            print('WAITING: Instance {} is {}'.format(instance.id, instance.state))
             time.sleep(6)
             instance.update()
 
-        print("SUCC: Instance {} is {}".format(instance.id, instance.state))
+        print("SUCCESS: Instance {} is {}".format(instance.id, instance.state))
 
         self.ec2_conn.attach_volume(volume.id, instance.id, '/dev/vdc')
         print('Volume {} has been attached to \{} at /dev/vdc'.format(volume.id, instance.id))

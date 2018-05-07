@@ -1,8 +1,13 @@
+---
 - hosts: all
   sudo: yes
 
   tasks:
-    - import_tasks: tasks/docker.yaml
+    - import_tasks: tasks/basics.yaml
+    - import_tasks: tasks/install_docker.yaml
 
     - name: Pull couchDB image
-      command: sudo docker run -d -p 5984:5984 --env COUCHDB_USER=cluster --env COUCHDB_PASSWORD=cluster12 --volume /database:/opt/couchdb/data --volume /database/local.d:/opt/couchdb/etc/local.d --name couchdb-cluster couchdb
+      command: sudo docker pull couchdb
+
+    - name: Start couchDB
+      command: sudo docker run -d -p 5984:5984 --env COUCHDB_USER=cluster --env COUCHDB_PASSWORD=cluster12 --volume /database:/opt/couchdb/data --name couchdb-cluster couchdb
