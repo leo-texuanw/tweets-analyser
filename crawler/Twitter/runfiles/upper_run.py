@@ -4,10 +4,17 @@ import time
 import sys
 
 if __name__ == "__main__":
-	size_arg = len(sys.argv)
-	search_kwds = []
-	for i in range(1, len(sys.argv)):
-		search_kwds.append(sys.argv[i])
+
+  fr_kwds = open("SEARCH_LST.txt", "r")
+  temp_kwds = fr_kwds.readlines()
+  fr_kwds.close()
+
+  search_kwds = []
+	for item in temp_kwds:
+    temp_tag = item.split(";")[0].strip()
+    temp_kwd = item.split(";")[1].strip()
+    if temp_tag == "+"
+		  search_kwds.append(temp_kwd)
 
 	try:
 		fr_authcfg = open("AUTH_CONFIG.txt", "r")
@@ -51,19 +58,23 @@ if __name__ == "__main__":
 			continue
 		elif items[0] == "+":
 			ct_infos.append((items[1].strip(), items[2].strip(), items[3].strip()))
+
+
 	print "All Files Validated.."
 
 	run_cnt = 0
 
-	while (run_cnt < 100):
+	while (run_cnt < 1):
 		id = 0
 		for item in search_kwds:
 			print "create process for :" + item
-			#subproc (key_word, usr_op, db_info, auth_info, ct_info):
+      print "AUTH Index: " + str(id%len(auth_info))
+
 			p = mp.Process(target = twt3CDB.subproc, args = (item, usr_op, cdb_info, auth_info[id%len(auth_info)], ct_infos))
 			p.daemon = True
 			p.start()
 			id += 1
+
 		time.sleep(4000)
 		run_cnt += 1
 

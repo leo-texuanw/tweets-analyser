@@ -9,9 +9,6 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
     s_str = str(key_word)
     s = pycouchdb.Server(db_info, authmethod = "basic")
 
-    db_name = str(s_str + "_RES").replace("+","p")
-    db_name = db_name.replace("#","s")
-
     isWTL = False # write to local file
     for item in usr_op:
         if item[0] == "write_to_local":
@@ -19,12 +16,6 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
                 isWTL = True
             else:
                 isWTL = False
-
-    try:
-        rmt_db = s.database(db_name.lower())
-    except:
-        print "no such DB remotely..creating DB " + db_name.lower()
-        rmt_db = s.create(db_name.lower())
 
     consumer_key = auth_info[0]
     consumer_secret = auth_info[1]
@@ -42,11 +33,12 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
     ptrn_lang = re.compile(r"lang=u\'([a-zA-Z]+)\'")    #language
     ptrn_tmz = re.compile(r"time_zone=u\'([a-zA-Z]+)\'")    #timezone
     ptrn_dt = re.compile(r"datetime\.datetime\(([0-9, ]+)\)")   #datetime
+    ptrn_rt = re.compile(r"retweeted=True")    #retweet
 
     for item in ct_infos:
 
         s_radius = 8
-        offset = 0.3
+        offset = 0.4
         inc = 0.1
         (temp_ctname, temp_lat, temp_long) = item
 
@@ -58,20 +50,27 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
         avail_cnt = 0
         name_list = []
 
+        db_name = temp_ctname.replace(" ","_")
+
+        try:
+            rmt_db = s.database(db_name.lower())
+        except:
+            print "no such DB remotely..creating DB " + db_name.lower()
+            rmt_db = s.create(db_name.lower())
+
         while current_lat <= max_lat:
             while current_long <= max_long:
                 # for the current GPS info
                 temp_geocode = str(current_lat) + "," + str(current_long) + "," + str(s_radius) + "km" # no space allowed
                 #fetch origin name list, based on keyword
-                #name_list = []
-                print "FIND ORIGIN NAMES in " + temp_ctname + " @ lat: " + str(current_lat) + " long: " + str(current_long)
+
+                #print "FIND ORIGIN NAMES in " + temp_ctname + " @ lat: " + str(current_lat) + " long: " + str(current_long)
                 
                 # applying for retrieving data
                 isFailed = True
                 while isFailed:
                     try:
-                        #public_tweets = api.search(q = s_str, lang = "en", count = 150, geocode = temp_geocode)
-                        time.sleep (int(10))
+                        time.sleep (int(5))
                         public_tweets = tweepy.Cursor(api.search, q = s_str, lang = "en", result_type = "recent", geocode = temp_geocode).items()
                     except:
                         print "Connection Issue.. Reconnecting"
@@ -101,6 +100,7 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
                         temp_sttscnt = ptrn_sttscnt.findall(temp_str)
                         temp_tmz = ptrn_tmz.findall(temp_str)
                         temp_dt = ptrn_dt.findall(temp_str)
+                        temp_rt = ptrn_rt.findall(temp_str)
 
                         if not (len(temp_cdnt) == 0):
                             #print "TRUE"
@@ -138,21 +138,28 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
                             temp_dt = temp_dt[0]
                         else:
                             temp_dt = "null"
+
+                        if not (len(temp_rt) == 0):
+                            temp_rt = "True"
+                        else:
+                            temp_rt = "False"
+
                         temp_msg = str(item.text.encode("utf-8")).replace("\n"," ")
-                        wLine = "{\"name\":\"" + str(item.user.screen_name).strip() + "\",\"id\":\"" + temp_id + "\",\"status counts\":\"" + temp_sttscnt + "\",\"location filter\":\"" + geo_cityname[geo_index] + "\",\"time zone\":\"" + temp_tmz + "\",\"datetime\":\"" + temp_dt + "\",\"msg\":\"" + temp_msg + "\",\"cdnt\":\"" + str(temp_cdnt) + "\"}\n"
+                        wLine = "{\"name\":\"" + str(item.user.screen_name).strip() + "\",\"id\":\"" + temp_id + "\",\"status counts\":\"" + temp_sttscnt + "\",\"location filter\":\"" + temp_ctname + "\",\"time zone\":\"" + temp_tmz + "\",\"datetime\":\"" + temp_dt + "\",\"retweeted\":\"" + temp_rt + "\",\"keyword\":\"" + key_word + "\",\"msg\":\"" + temp_msg + "\",\"cdnt\":\"" + str(temp_cdnt) + "\"}\n"
                         
                         if isWTL:   #write to local file
-                            fw_flw_twt = open (s_str + "_RES.txt", "a")
+                            fw_flw_twt = open (s_str + ".txt", "a")
                             fw_flw_twt.write(wLine)
                             fw_flw_twt.close()
+                            
                         try:
-                            rmt_db.save(dict(_id = str(hash(temp_id + temp_msg)), info = wLine))
+                            rmt_db.save(dict(_id = str(hash(temp_id + temp_msg)), name = str(item.user.screen_name).strip(), usr_id = temp_id, status_count = temp_sttscnt, location = temp_ctname, time_zone = temp_tmz, datetime = temp_dt, retweeted = temp_rt, keyword = key_word, msg = temp_msg, coordinate = str(temp_cdnt)))
                         except:
                             continue
                     else:
                         continue
-                print  "TOTAL COUNTS: " + str(avail_cnt)
+                #print  "TOTAL COUNTS: " + str(avail_cnt)
                 current_long += inc
 
             current_lat += inc
-            current_long = temp_long - offset
+            current_long = float(temp_long) - offset

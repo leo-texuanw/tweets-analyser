@@ -42,6 +42,7 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
     ptrn_lang = re.compile(r"lang=u\'([a-zA-Z]+)\'")    #language
     ptrn_tmz = re.compile(r"time_zone=u\'([a-zA-Z]+)\'")    #timezone
     ptrn_dt = re.compile(r"datetime\.datetime\(([0-9, ]+)\)")   #datetime
+    ptrn_rt = re.compile(r"retweeted=True")    #retweet
 
     for item in ct_infos:
 
@@ -71,7 +72,7 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
                 while isFailed:
                     try:
                         #public_tweets = api.search(q = s_str, lang = "en", count = 150, geocode = temp_geocode)
-                        time.sleep (int(10))
+                        time.sleep (int(5))
                         public_tweets = tweepy.Cursor(api.search, q = s_str, lang = "en", result_type = "recent", geocode = temp_geocode).items()
                     except:
                         print "Connection Issue.. Reconnecting"
@@ -101,6 +102,7 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
                         temp_sttscnt = ptrn_sttscnt.findall(temp_str)
                         temp_tmz = ptrn_tmz.findall(temp_str)
                         temp_dt = ptrn_dt.findall(temp_str)
+                        temp_rt = ptrn_rt.findall(temp_str)
 
                         if not (len(temp_cdnt) == 0):
                             #print "TRUE"
@@ -138,15 +140,22 @@ def subproc (key_word, usr_op, db_info, auth_info, ct_infos):
                             temp_dt = temp_dt[0]
                         else:
                             temp_dt = "null"
+
+                        if not (len(temp_rt) == 0):
+                            temp_rt = "True"
+                        else:
+                            temp_rt = "False"
+
                         temp_msg = str(item.text.encode("utf-8")).replace("\n"," ")
-                        wLine = "{\"name\":\"" + str(item.user.screen_name).strip() + "\",\"id\":\"" + temp_id + "\",\"status counts\":\"" + temp_sttscnt + "\",\"location filter\":\"" + temp_ctname + "\",\"time zone\":\"" + temp_tmz + "\",\"datetime\":\"" + temp_dt + "\",\"msg\":\"" + temp_msg + "\",\"cdnt\":\"" + str(temp_cdnt) + "\"}\n"
+                        wLine = "{\"name\":\"" + str(item.user.screen_name).strip() + "\",\"id\":\"" + temp_id + "\",\"status counts\":\"" + temp_sttscnt + "\",\"location filter\":\"" + temp_ctname + "\",\"time zone\":\"" + temp_tmz + "\",\"datetime\":\"" + temp_dt + "\",\"retweeted\":\"" + temp_rt + "\",\"msg\":\"" + temp_msg + "\",\"cdnt\":\"" + str(temp_cdnt) + "\"}\n"
                         
                         if isWTL:   #write to local file
                             fw_flw_twt = open (s_str + "_RES.txt", "a")
                             fw_flw_twt.write(wLine)
                             fw_flw_twt.close()
                         try:
-                            rmt_db.save(dict(_id = str(hash(temp_id + temp_msg)), info = wLine))
+                            #rmt_db.save(dict(_id = str(hash(temp_id + temp_msg)), info = wLine))
+                            rmt_db.save(dict(_id = str(hash(temp_id + temp_msg)), name = str(item.user.screen_name).strip(), usr_id = temp_id, status_count = temp_sttscnt, location = temp_ctname, time_zone = temp_tmz, datetime = temp_dt, retweeted = temp_rt, msg = temp_msg, coordinate = str(temp_cdnt)))
                         except:
                             continue
                     else:
