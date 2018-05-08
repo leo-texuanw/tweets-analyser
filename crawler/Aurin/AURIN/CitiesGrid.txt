@@ -1,0 +1,11 @@
+-;ct_name;latitude;longitude;offset
++;Sydney;-33.868;151.207;0.4
++;Melbourne;-37.814;144.963;0.4
++;Brisbane;-27.468;153.028;0.4
++;Perth;-31.952;115.861;0.4
++;Adelaide;-34.929;138.599;0.4
++;Gold Coast;-28;153.431;0.4
++;Canberra;-35.283;149.128;0.4
++;Newcastle;-32.927;151.776;0.4
++;Wollongong;-34.424;150.893;0.4
++;Logan City;-27.639;153.109;0.4
