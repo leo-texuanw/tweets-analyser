@@ -6,7 +6,7 @@ from boto.ec2.regioninfo import RegionInfo
 from boto import exception as botoException
 
 class MyNectar:
-    """ This is a class containing Nectar operation functions.  """
+    """ This is a class wrapping Nectar operation functions.  """
 
     def __init__(self):
         self.access_key_id = 'c6ba6f8fbbbe4e56879fd23610617247'
@@ -50,7 +50,7 @@ class MyNectar:
             )
 
             print(reservation)
-            print('Reservation.instances:', reservation.instances)
+            print('Reservation.instances: ', reservation.instances)
 
             MyNectar.display_instances(reservation.instances)
         except botoException.EC2ResponseError:
@@ -98,10 +98,8 @@ class MyNectar:
         return curr_vols
 
 
-    def attach_volume(self, volume, instance):
+    def attach_volume(self, volume_id, instance):
         """ Attach volume when instance is ready """
-
-        print("volume status:", volume.status)
 
         # check if instance status is "running"
         while instance.state != 'running':
@@ -111,5 +109,5 @@ class MyNectar:
 
         print("SUCCESS: Instance {} is {}".format(instance.id, instance.state))
 
-        self.ec2_conn.attach_volume(volume.id, instance.id, '/dev/vdc')
-        print('Volume {} has been attached to \{} at /dev/vdc'.format(volume.id, instance.id))
+        self.ec2_conn.attach_volume(volume_id, instance.id, '/dev/vdc')
+        print('Volume {} has been attached to {} at /dev/vdc'.format(volume_id, instance.id))
