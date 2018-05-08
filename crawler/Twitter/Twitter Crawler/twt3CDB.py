@@ -156,3 +156,4 @@ def subproc (key_word, usr_op, rmt_db, auth_info, ct_infos):
 
             current_lat += inc
             current_long = float(temp_long) - offset
+    sys.exit(0)
