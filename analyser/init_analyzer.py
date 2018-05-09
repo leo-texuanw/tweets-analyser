@@ -20,3 +20,6 @@ f.write(str(MACHINE_TOTAL) + '\n')
 f.write(str(MAXIMUM_QUERY) + '\n')
 f.write(str(INTERVAL))
 f.close()
+
+import nltk
+nltk.download('popular')
