@@ -1,0 +1,1 @@
+{'java_res': 'Java', 'cpp_res': 'C++', 'cppprogram_res': 'C++', 'sql_res': 'SQL', 'cs_res': 'C#', 'haskell_res': 'Haskell', 'javascript_res': 'JavaScript', 'php_res': 'PHP', 'prolog_res': 'Prolog', 'python_res': 'Python', 'matlab_res': 'MATLAB'}
