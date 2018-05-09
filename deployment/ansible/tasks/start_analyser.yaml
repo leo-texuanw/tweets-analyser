@@ -1,0 +1,11 @@
+---
+## Start Analyser
+- name: Install Python3.6
+  apt:
+    name: python3.6
+    state: present
+    install_recommends: no
+    update_cache: yes
+
+    #- pip:
+    #    name:

@@ -37,12 +37,14 @@ class MyNectar:
     # Instances Operation
     def launch_instance(self, max_instances=1):
         """ To launch a new instance. If `max_instances` cannot be fulfilled,
-            only minimum instance, default as 1, will be established.
+            only minimum instance will be established,
+            set the same as maximum here
         """
         try:
             reservation = self.ec2_conn.run_instances(
                 image_id=self.image_id,
                 max_count=max_instances,
+                min_count=max_instances,
                 key_name=self.key_name,
                 instance_type=self.instance_type,
                 security_groups=self.security_groups,
@@ -110,4 +112,4 @@ class MyNectar:
         print("SUCCESS: Instance {} is {}".format(instance.id, instance.state))
 
         self.ec2_conn.attach_volume(volume_id, instance.id, '/dev/vdc')
-        print('Volume {} has been attached to {} at /dev/vdc'.format(volume_id, instance.id))
+        print('Volume {} has been attached to {} at /dev/vdc\n'.format(volume_id, instance.id))

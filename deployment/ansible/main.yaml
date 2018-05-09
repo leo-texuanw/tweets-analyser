@@ -1,0 +1,22 @@
+---
+# Install basic tools and requirement for all services
+- hosts: all
+  sudo: yes
+
+  tasks:
+    - import_tasks: tasks/basics_setup.yaml
+
+# Setup CouchDb and start up analysers
+- hosts: analyser
+  sudo: yes
+
+  tasks:
+    - import_tasks: tasks/start_analyser.yaml
+
+# Start up crawler and web service
+#- hosts: crawler_web
+#  sudo: yes
+#
+#  tasks:
+#      import_tasks: tasks/start_crawler.yaml
+#      import_tasks: tasks/start_web_server.yaml

@@ -1,0 +1,30 @@
+---
+## Start Crawler
+- hosts: CRAWLER_WEB
+  sudo: yes
+
+  tasks:
+    - import_tasks: tasks/basics_setup.yaml
+
+    - name: Install Python2
+      apt:
+        name: "{{ item }}"
+        install_recommends: no
+        update_cache: yes
+      with_items:
+          - python-pip
+          - python-setuptools
+
+    - name: Install required libraries
+      pip:
+          name: "{{ item }}"
+      with_items:
+          - tweepy
+          - pycouchdb
+
+    - name: Start Crawler
+      shell: nohup python2 ./upper_run.py cluster cluster12 115.146.95.248 5984
+      args:
+        chdir: "/home/ubuntu/cluster_assign2/crawler/Twitter/Twitter Crawler"
+      async: 10  # Wait for 10 seconds as maximon
+      poll: 0    # Return 0 as no need to wait

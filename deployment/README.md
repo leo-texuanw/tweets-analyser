@@ -1,4 +1,5 @@
 # Deployment
+    $ ansible-playbook -i hosts -u ubuntu --key-file=~/.ssh/nectar.key setup_servers.yaml -y
 
 ## TODO
 ### Boto

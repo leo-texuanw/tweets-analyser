@@ -1,4 +1,5 @@
 ---
+# Install docker
 - name: Get current kernel
   shell: "uname -r"
   ignore_errors: yes
@@ -13,7 +14,7 @@
     - docker-engine
     - docker.io
 
-- name: Install dependencies
+- name: Install docker dependencies
   apt:
     name: "{{ item }}"
     state: latest
@@ -22,12 +23,6 @@
   with_items:
       - linux-image-extra-{{ current_kernel.stdout }}
       - linux-image-extra-virtual
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - software-properties-common
-      - python-pip
-      - python-setuptools
 
 - name: Add docker repository key
   apt_key:
@@ -50,9 +45,9 @@
   with_items:
     - docker-ce
 
-- name: Update pip and install docker-compose
-  pip:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - pip
+      #- name: Update pip and install docker-compose
+      #  pip:
+      #    name: "{{ item }}"
+      #    state: latest
+      #  with_items:
+      #    - pip
