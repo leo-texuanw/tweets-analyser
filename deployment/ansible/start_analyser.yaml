@@ -37,12 +37,12 @@
       #  command: pip3 install pickle
 
     - name: Init Analyser
-      shell: python3 init_analyzer.py 1 115.146.95.248 5984
+      shell: setsid python3 init_analyzer.py 1 115.146.95.248 5984
       args:
         chdir: "/home/ubuntu/cluster_assign2/analyser/"
 
     - name: Start Analyser
-      shell: python3 DB_analyzer.py4
+      shell: setsid python3 DB_analyzer.py
       args:
         chdir: "/home/ubuntu/cluster_assign2/analyser/"
       async: 10  # Wait for 10 seconds as maximon

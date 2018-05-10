@@ -42,7 +42,8 @@ while True:
     print('INTERVAL:  \t', INTERVAL)
     
     r = requests.get(DB_URL + '_design/analyser/_view/to_analyse')
-    L = json.loads(r.content)
+    #L = json.loads(str(r.content))
+    L = r.json()
 
     total_rows = L['total_rows']
 
