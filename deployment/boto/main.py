@@ -6,14 +6,13 @@ import time
 import socket
 from mynectar import MyNectar
 
-def get_all_ips(my_nectar):
+def get_all_ips(my_nectar,instances_ids):
     ips = []
 
-    reservations = my_nectar.get_all_reservations()
+    reservations = my_nectar.get_all_reservations(instances_ids)
     for idx, _ in enumerate(reservations):
         for instance in reservations[idx].instances:
             ips.append(instance.private_ip_address)
-    ips.remove('115.146.95.248')
     print(ips)
     return ips
 
@@ -44,7 +43,7 @@ def until_ssh_port_open(ips):
     for ip in ips:
         result = 1
         while not (result == 0):
-            print("Port is not open on ", ip)
+            print("WAITING: Port is not open on ", ip)
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             result = sock.connect_ex((ip,SSH_PORT))
             time.sleep(5)
@@ -67,16 +66,18 @@ if __name__ == '__main__':
     print('instances', instances)
 
     # Instances created successfully
+    instances_ids = []
     if instances is not None:
         for i in range(0, int(server_count)):
             instance = instances[i]
+            instances_ids.append(instance.id)
             if i < len(volume_ids):
                 my_nectar.attach_volume(volume_ids[i], instance)
             else:
                 wait_until_running(instance)
 
         # Write ips to `hosts` file
-        ips = get_all_ips(my_nectar)
+        ips = get_all_ips(my_nectar, instances_ids)
         write_hosts(server_group, ips)
 
         until_ssh_port_open(ips)

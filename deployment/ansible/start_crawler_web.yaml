@@ -21,10 +21,26 @@
       with_items:
           - tweepy
           - pycouchdb
+          - flask
+          - pandas
 
     - name: Start Crawler
       shell: nohup python2 ./upper_run.py cluster cluster12 115.146.95.248 5984
       args:
         chdir: "/home/ubuntu/cluster_assign2/crawler/Twitter/Twitter Crawler"
+      async: 10  # Wait for 10 seconds as maximon
+      poll: 0    # Return 0 as no need to wait
+
+    - name: Start Web
+      shell: nohup python2 init_web.py 115.146.95.248 5984
+      args:
+        chdir: "/home/ubuntu/cluster_assign2/app/"
+      async: 10  # Wait for 10 seconds as maximon
+      poll: 0    # Return 0 as no need to wait
+
+    - name: Start Web
+      shell: nohup python2 demo_web.py
+      args:
+        chdir: "/home/ubuntu/cluster_assign2/app/"
       async: 10  # Wait for 10 seconds as maximon
       poll: 0    # Return 0 as no need to wait
