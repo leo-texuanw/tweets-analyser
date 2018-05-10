@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="icon.ico">
+    <title>COMP90024 Project</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+    
+  </head>
+  
+  <body>
+  
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        <a class="navbar-brand" href="/">COMP90024 Team 12</a> </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="home">Home</a></li>
+          <li class="active"><a href="data_exp">Data Explorer</a></li>
+          <li><a href="map_view/overview">Map View</a></li>
+          <li class="dropdown"> <a href="javascrpit:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/">Choose Your Data</a></li>
+              <li><a role="button" data-toggle="modal" data-target="#data_exp_settings">Data Explorer</a></li>
+              <li class="disabled"><a role="button" data-toggle="modal" data-target="#not_available">Map View</a></li>
+              <li role="separator" class="divider"></li>
+              <li class="dropdown-header">Powered By</li>
+              <li><a role="button" data-toggle="modal" data-target="#about_us">Nai Wang</a></li>
+              <li><a role="button" data-toggle="modal" data-target="#about_us">Texuan Wu</a></li>
+              <li><a role="button" data-toggle="modal" data-target="#about_us">Siran Li</a></li>
+              <li><a role="button" data-toggle="modal" data-target="#about_us">Yujing Jiang</a></li>
+              <li><a role="button" data-toggle="modal" data-target="#about_us">Ratih Putri Pertiwi</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!--/.nav-collapse --> 
+    </div>
+  </nav>
+  
+  <!-- Modal of setting -->
+  <div class="modal fade" id="data_exp_settings" tabindex="-1" role="dialog" aria-labelledby="data_exp_modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+          <h4 class="modal-title" id="myModalLabel">Settings of Data Explorer</h4>
+        </div>
+        <div class="modal-body">
+          <form name="change_settings" method="post" action="data_exp">
+            <h4>Select the range of data to display</h4>
+            <h5>&nbsp;</h5>
+            <select class="form-control">
+				<option>All Twitter data</option>
+			</select>
+            <h5>&nbsp;</h5>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onClick="change_settings.submit();">Apply changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+   <!-- Modal of Info Page -->
+  <div class="modal fade" id="about_us" tabindex="-1" role="dialog" aria-labelledby="nan" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+          <h4 class="modal-title" id="myModalLabel_about">About us</h4>
+        </div>
+        <div class="modal-body">
+          <h3>This project is made by:</h3>
+          <h6>&nbsp;</h6>
+          <h4>&nbsp;&nbsp;&nbsp;Nai Wang</h4>
+          <h4>&nbsp;&nbsp;&nbsp;Texuan Wu</h4>
+          <h4>&nbsp;&nbsp;&nbsp;Siran Li</h4>
+          <h4>&nbsp;&nbsp;&nbsp;Yujing Jiang</h4>
+          <h4>&nbsp;&nbsp;&nbsp;Ratih Putri Pertiwi</h4>
+          <h6>&nbsp;</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal of error page -->
+  <div class="modal fade" id="not_available" tabindex="-1" role="dialog" aria-labelledby="nan" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+          <h4 class="modal-title" id="myModalLabel_2">SETTINGS NOT AVAILABLE</h4>
+        </div>
+        <div class="modal-body">
+          <h3>The settings you chosen is not available now!</h3>
+          <h6>&nbsp;</h6>
+          <h4>&nbsp;&nbsp;&nbsp;Now you can only change the settings of the data explorer ...</h4>
+          <h6>&nbsp;</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Begin page content -->
+  <div class="container"> &nbsp;<br>
+    <div class="col-xs-6 col-lg-offset-0 col-lg-8">
+      <h1>Your Selected Data are Shown Below</h1>
+    </div>
+    <div class="col-xs-6 col-lg-2 col-lg-offset-1">
+      <h1>
+        <button id="change_settings" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#data_exp_settings"> Change Settings </button>
+      </h1>
+    </div>
+  </div>
+  <div class="row" style="width:90%;">
+    <h4>
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Note:&nbsp; </strong>The positive class here is abstracted to be non-negative.</div>
+    </h4>
+  </div>
+  <div name="data_table" class="row" align="center" style="width:85%;">
+{table__}
+  </div>
+  <footer class="footer">
+    <div class="container">
+      <p class="lead-foot">COMP90024 - Cluster and Cloud Computing</p>
+      <p class="lead-footss">&nbsp;&nbsp;Copyright &nbsp;-&nbsp; Nai Wang, Texuan Wu, Siran Li, Yujing M. Jiang &amp Ratih P. Pertiwi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ The University of Melbourne 2018</p>
+    </div>
+  </footer>
+  
+  <!-- Bootstrap core JavaScript
+      ================================================== --> 
+  <!-- Placed at the end of the document so the pages load faster --> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script> 
+  <script src="js/bootstrap.min.js"></script> 
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug --> 
+  <script src="js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
