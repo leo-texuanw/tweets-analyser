@@ -1,0 +1,12 @@
+-;a new process will be created for each keyword here, starts by +, case sensitive
++;Java
++;C++
++;C#
++;PHP
++;SQL
++;MATLAB
++;Python
++;Haskell
++;Prolog
++;VisualBasic
++;JavaScript

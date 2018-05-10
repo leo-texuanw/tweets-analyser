@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="icon.ico">
+    <title>COMP90024 Project</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+    
+    <!-- Drop File JS -->
+    <script src="js/dropzone.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+  
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        <a class="navbar-brand" href="/">COMP90024 Team 12</a> </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a role="button" onClick="submit_data.submit();" data-toggle="modal" data-target="#processing">Home</a></li>
+          <li><a role="button" data-toggle="modal" data-target="#not_available">Data Explorer</a></li>
+          <li><a role="button" data-toggle="modal" data-target="#not_available">Map View</a></li>
+          <li class="dropdown"> <a href="javascrpit:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="index.html">Choose Your Data</a></li>
+              <li class="disabled"><a role="button" data-toggle="modal" data-target="#not_available">Data Explorer</a></li>
+              <li class="disabled"><a role="button" data-toggle="modal" data-target="#not_available">Map View</a></li>
+              <li role="separator" class="divider"></li>
+              <li class="dropdown-header">Powered By</li>
+              <li><a role="button" data-toggle="modal" data-target="#about_us">Nai Wang</a></li>
+              <li><a role="button" data-toggle="modal" data-target="#about_us">Texuan Wu</a></li>
+              <li><a role="button" data-toggle="modal" data-target="#about_us">Siran Li</a></li>
+              <li><a role="button" data-toggle="modal" data-target="#about_us">Yujing Jiang</a></li>
+              <li><a role="button" data-toggle="modal" data-target="#about_us">Ratih Putri Pertiwi</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!--/.nav-collapse --> 
+    </div>
+  </nav>
+  
+  <!-- Begin page content -->
+  <div class="container">
+    <div class="page-header">
+      <h1>Overview of datasets
+        <span style="float:right; margin-right:80px">
+        </span>
+      </h1>
+    </div>
+    <div class="container">
+      <p class="lead">Confirm the dataset provided or upload JSON file (for developers only).</p>
+      <p class="lead">&nbsp;</p>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 col-lg-offset-2 col-lg-4">
+        <form name="data_choose" method="post" value="datax" action="start.html">
+          <div class="list-group"> <a href="javascript:change_data('data1');" id="data1" onClick="this.alert" class="list-group-item active" >
+            <h4 class="list-group-item-heading">Twitter Data</h4>
+            <p class="list-group-item-text">Tweets contains programming language(s)</p>
+            </a> <a href="javascript:change_data('data2');" id="data2" class="list-group-item">
+            <h4 class="list-group-item-heading">AURIN: Household Statistics</h4>
+            <p class="list-group-item-text">Country: Australia&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Year: xxxx</p>
+            </a> <a href="javascript:change_data('data3');" id="data3" class="list-group-item">
+            <h4 class="list-group-item-heading">AURIN: Income Statistics</h4>
+            <p class="list-group-item-text">Country: Australia&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Year xxxx</p>
+            </a> </div>
+        </form>
+      </div>
+      <div class="col-xs-6 col-lg-4 col-lg-offset-0">
+        <p>&nbsp;</p>
+        <div class="jumbotron">
+          <form name="submit_data" method="post" action="home">
+            <input name="final_data" id="final_data" value="data1" style="display:none" />
+          </form>
+          <form action="/upload-target" class="dropzone">
+          </form>
+        </div>
+      </div>
+      <div class="row"> </div>
+      <div class="col-xs-6 col-lg-4"> </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 col-lg-offset-2 col-lg-4">
+        <p>&nbsp;</p>
+      </div>
+      <div class="col-xs-6 col-lg-4"> </div>
+    </div>
+    <div class="row" align="center">
+      <div class="col-xs-6 col-lg-offset-2 col-lg-4">
+        <button class="btn btn-primary btn-lg" onClick="submit_data.submit();" data-toggle="modal" data-target="#processing">Process and continue</button>
+      </div>
+      <div class="col-xs-6 col-lg-4">
+        <button type="button" class="btn btn-primary btn-lg id disabled">Upload and continue</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal of error page -->
+  <div class="modal fade" id="not_available" tabindex="-1" role="dialog" aria-labelledby="nan" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+          <h4 class="modal-title" id="myModalLabel_2">NOT AVAILABLE</h4>
+        </div>
+        <div class="modal-body">
+          <h3>The function you chosen is not available right now!</h3>
+          <h6>&nbsp;</h6>
+          <h4>&nbsp;&nbsp;&nbsp;Please select your data first ...</h4>
+          <h6>&nbsp;</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal of Info Page -->
+  <div class="modal fade" id="about_us" tabindex="-1" role="dialog" aria-labelledby="nan" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+          <h4 class="modal-title" id="myModalLabel_about">About us</h4>
+        </div>
+        <div class="modal-body">
+          <h3>This project is made by:</h3>
+          <h6>&nbsp;</h6>
+          <h4>&nbsp;&nbsp;&nbsp;Nai Wang</h4>
+          <h4>&nbsp;&nbsp;&nbsp;Texuan Wu</h4>
+          <h4>&nbsp;&nbsp;&nbsp;Siran Li</h4>
+          <h4>&nbsp;&nbsp;&nbsp;Yujing Jiang</h4>
+          <h4>&nbsp;&nbsp;&nbsp;Ratih Putri Pertiwi</h4>
+          <h6>&nbsp;</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal of processing -->
+  <div class="modal fade" id="processing" tabindex="-1" role="dialog" aria-labelledby="nan" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+          <h4 class="modal-title" id="myModalLabel_3">Connecting to database</h4>
+        </div>
+        <div class="modal-body">
+          <h3>Your data is being processed.</h3>
+          <h4>&nbsp;</h4>
+          <h4>&nbsp;&nbsp;&nbsp;&nbsp;Please wait ...</h4>
+          <h4>&nbsp;&nbsp;&nbsp;&nbsp;The processing time may be up to 10 seconds</h4>
+          <h4>&nbsp;</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="container">
+      <p class="lead-foot">COMP90024 - Cluster and Cloud Computing</p>
+      <p class="lead-footss">&nbsp;&nbsp;Copyright &nbsp;-&nbsp; Nai Wang, Texuan Wu, Siran Li, Yujing M. Jiang &amp Ratih P. Pertiwi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ The University of Melbourne 2018</p>
+    </div>
+  </footer>
+  <script>
+function change_data(obj) {
+
+document.getElementById("data1").className = 'list-group-item'; 
+document.getElementById("data2").className = 'list-group-item'; 
+document.getElementById("data3").className = 'list-group-item'; 
+document.getElementById(obj).className = 'list-group-item active'; 
+document.getElementById("final_data").value = obj;
+}
+
+
+
+</script> 
+  
+  <!-- Bootstrap core JavaScript
+    ================================================== --> 
+  <!-- Placed at the end of the document so the pages load faster --> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script> 
+  <script src="js/bootstrap.min.js"></script> 
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug --> 
+  <script src="js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
+=======
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="echarts.min.js"></script>
+    <title>Map Document</title>
+</head>
+<body>
+    <div id="main" style="width: 100%;height:800px;"></div>
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+
+        myChart.showLoading();
+
+
+        $.get('Australia.json', function (geoJson) {
+        // var test = JSON.parse(geoJson);
+        
+        // for(var i = 0; i < test['features'].length; i++){
+        //     console.log(test['features'][i]['properties']['name']);
+        // }
+
+        myChart.hideLoading();
+
+        echarts.registerMap('HK', geoJson);
+
+        myChart.setOption(option = {
+           
+            title: {
+                text: 'Australia map',
+                subtext: 'discribe',
+                sublink: '' //put some link to test
+            },
+            //   cpp c python java
+            // 
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                    // params.name : name for each area
+                    var res = params.name+'<br/>';
+                    var myseries = option.series;
+                    // 
+                    for (var i = 0; i < myseries.length; i++) {
+                        for(var j=0;j<myseries[i].data.length;j++){
+                            if(myseries[i].data[j].name == params.name){
+                                for(var k=0;k<myseries[i].data[j].code.length;k++){
+                                    res += myseries[i].data[j].code[k].language +' : ' + myseries[i].data[j].code[k].proportion + '</br>';
+                                }
+                                
+                            }  
+                        }  
+                    }  
+                    return res;  
+                }
+            },
+            
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            
+            visualMap: {
+                min: 800,
+                max: 50000,
+                text:['High','Low'],
+                realtime: false,
+                calculable: true,
+                inRange: {
+                    color: ['lightskyblue','yellow', 'orangered']
+                }
+            },
+            series: [
+                {
+                    name: 'Australia map', 
+                    type: 'map',
+                    mapType: 'HK', 
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    
+                    /*
+                    
+
+                   
+
+
+                    */
+                    data:[
+                        {name: 'Macquarie Island', value: 20057.34 ,code:[{language:'CPP' , proportion:'80%'},{language:'C' , proportion:'80%'},{language:'JAVA' , proportion:'80%'},{language:'Python' , proportion:'80%'},]},
+                        {name: 'Jervis Bay Territory', value: 15477.48 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Northern Territory', value: 31686.1,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Western Australia', value: 6992.6 ,code:[{language:'CPP' , proportion:'80%'},{language:'C' , proportion:'80%'},{language:'JAVA' , proportion:'80%'},{language:'Python' , proportion:'80%'},]},
+                        {name: 'Australian Capital Territory', value: 44045.49 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'New South Wales', value: 40689.64 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'South Australia', value: 37659.78 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Victoria', value: 45180.97 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Queensland', value: 55204.26 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Norfolk Island', value: 21900.9 ,code:[{language:'CPP' , proportion:'80%'}]},
+                        {name: 'Tasmania', value: 4918.26 ,code:[{language:'CPP' , proportion:'80%'}]}
+                    ],
+                    
+                }
+            ]
+        });
+    });
+
+    </script>
+</body>
+</html>
