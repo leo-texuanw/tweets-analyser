@@ -15,7 +15,10 @@ MACHINE_NO = 0
 MACHINE_TOTAL = 1
 DB_USERNAME = 'cluster'
 DB_PASSWORD = 'cluster12'
-DB_URL = 'http://%s:%s@115.146.95.253:5984/tweets/' % (DB_USERNAME, DB_PASSWORD)
+IP = '115.146.95.253'
+PORT = 5984
+DB_URL = 'http://%s:%s@%s:%d/tweets/' % \
+         (DB_USERNAME, DB_PASSWORD, IP, PORT)
 
 while True:
     try:
@@ -25,9 +28,14 @@ while True:
         MACHINE_TOTAL = int(PARA[1])
         MAXIMUM_QUERY = int(PARA[2])
         INTERVAL = int(PARA[3])
+        IP = str(PARA[4]).strip('\n')
+        PORT = int(PARA[5])
+        DB_URL = 'http://%s:%s@%s:%d/tweets/' % \
+                 (DB_USERNAME, DB_PASSWORD, IP, PORT)
         f.close()
     except:
         print('Incorrect file: info_analyzer.para')
+    print('DB_URL:\t', DB_URL)
     print('MACHINE_NO:\t', MACHINE_NO)
     print('MACHINE_TOTAL:\t', MACHINE_TOTAL)
     print('MAXIMUM_QUERY:\t', MAXIMUM_QUERY)
@@ -50,7 +58,7 @@ while True:
     sid = SentimentIntensityAnalyzer()
 
     for data_index in range(MACHINE_NO, \
-                min(total_rows, MAXIMUM_QUERY), MACHINE_TOTAL):
+                min(total_rows, MAXIMUM_QUERY * MACHINE_TOTAL), MACHINE_TOTAL):
         doc = L['rows'][data_index]['value']
         if 'msg' not in doc:
             continue
