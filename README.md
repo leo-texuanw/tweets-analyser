@@ -2,23 +2,23 @@
 
 ## Overview
 This is a project for assignment 2 of Cluster and Cloud Computing, semester
-one, 2018.  
-
+one, 2018, The University of Melbourne.  
+Here is a link to a [introduction video](https://youtu.be/UMS-4cq4-KQ) of this project.
 ### Components
-- app/ - the front-end website to visulize this application.
+- [app](http://115.146.95.248:5985)/ - the front-end website to visulize this application.
 - crawler/ - the application to crawl raw data from AURIN API and the Internet
 (Twitter API).
-- database/ - the application to store data (CouchDB, even Hadoop/Spark can be
+- [database](http://115.146.95.248:5984/_utils/)/ - the application to store data (CouchDB, even Hadoop/Spark can be
         considered).
 - analyser/ - the application for analysing data.
+- deploy/ - for autimate deployment
 
 ### Authors
-- NAME                  ID          EMAIL
-- Nai Wang            927209   naiw1@student.unimelb.edu.au
-- Texuan Wu           984730   texuanw@student.unimelb.edu.au
-- Siran L1            906730   siranl2@student.unimelb.edu.au
-- Yujing Jiang        720903   yujingj@student.unimelb.edu.au
-- Ratih Putri Pertiwi 969864   pertiwir@student.unimelb.edu.au
+- Nai Wang -            927209 -  naiw1@student.unimelb.edu.au
+- Texuan Wu -           984730 -  texuanw@student.unimelb.edu.au
+- Siran L1 -            906730 -  siranl2@student.unimelb.edu.au
+- Yujing Jiang -        720903 -  yujingj@student.unimelb.edu.au
+- Ratih Putri Pertiwi - 969864 -  pertiwir@student.unimelb.edu.au
 
 
 # DEADLINE - 10<sup>th</sup> May 1 pm
