@@ -83,9 +83,6 @@ def connect_db():
     L_lang.sort()
     L_city.sort()
 
-    print('Lang:', L_lang)
-    print('City:', L_city)
-
     for lang in L_lang:
         dict_LCS[lang] = {}
         for city in L_city:
@@ -147,7 +144,6 @@ def bubble_data_analyzer():
     STAT_URL = DB_URL + 'aurin_db/stats'
     r = requests.get(STAT_URL)
     L = r.json()
-    print(L)
     dict_avg_income_pp = L['avg_income_pp']
     dict_avg_income_ph = L['avg_income_ph']
     dict_num_household = L['num_household']
@@ -225,7 +221,6 @@ Plotly.plot(BUBBLE, data, layout);'''
         append_dict['name'] = city
         for ele in L_city:
             if ele not in dict_non_neg:
-                print(ele, 'not in dict')
                 continue
             append_dict['text'] = \
                 append_dict['text']+ '''"''' + ele + '''",'''
@@ -346,8 +341,6 @@ def data_exp():
     data_table += "    </tbody>\n"
     data_table += "</table>\n"
     
-    # Print the HTML table in the terminal to check
-    print(data_table)
     
     return data_exp_html.format(table__ = data_table)
 
@@ -388,7 +381,6 @@ def opt_bubble():
     y = int(request.form['y']) - 10
     bubble = int(request.form['z']) - 20
     size_ref = int(str(request.form['size'])[1:])
-    print(size_ref)
                  
     # Analyze the data used to be output in bubble chart
     bubble_data_analyzer()
@@ -460,7 +452,6 @@ def generate_map_html(lang):
 
     data_table = json.dumps(data_table).replace("'", '', 1000).\
                  replace('"', '', 1000).replace('*~', "'", 1000)
-    print(data_table)
     
     return map_view_html.replace('{table__}', data_table).\
            replace('{size__}', str(ref_size)).\
@@ -472,7 +463,6 @@ def map_view():
 
 @app.route('/map_view/<lang>', methods=['POST', 'GET'])
 def opt_map_view(lang):
-    print('Language detected:', lang)
     return generate_map_html(lang)
 
 # Flask main process
