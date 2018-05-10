@@ -47,7 +47,6 @@ def until_ssh_port_open(ips):
             print("Port is not open on ", ip)
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             result = sock.connect_ex((ip,SSH_PORT))
-            print(result)
             time.sleep(5)
         print("Port 22 is open on ", ip)
 

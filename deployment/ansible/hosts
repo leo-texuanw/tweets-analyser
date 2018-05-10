@@ -1,5 +1,5 @@
-[CRAWLER_WEB]
-115.146.94.38
+[DB_ANALYSER]
+115.146.95.79
 
 [all:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
